@@ -14,7 +14,6 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.label = Winform(self.widget)
         self.gridLayout_3.addWidget(self.label)
-        # self.label.setAutoFillBackground(True)
         self.directory = []  # 文件根目录
         self.file_list = []  # 存储所有文件的文件名
         self.img_path = ''  # 当前文件路径
@@ -33,14 +32,15 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.dir = ''
         self.history = int
         self.history_path = './history.txt'
+        self.history_dir = ''
         self.save_root = 'D:/result'
         self.save_dir = ''
-        self.csv_out_path = './label_result.csv'
+        self.csv_out_path = 'D:/result/label_result.csv'
         self.count = 0
         self.all_count = 0
         self.create_csv()
-        self.create_history()
-        self.save_size = self.label.size()
+        self.read_history()
+        # self.save_size = self.label.size()
         self.csv_in = ['', 6, '双层', '液体', '有', '无', '无', '无', '无', '有', 1, 'H']
 
         self.start.clicked.connect(self.open_all)  # 打开图像文件路径
@@ -56,18 +56,24 @@ class mywindow(QMainWindow, Ui_MainWindow):
 
     def create_csv(self):
         if not os.path.exists(self.csv_out_path):
-            df2 = pd.DataFrame(columns=['Check_ID', '直径', '管壁层次', '阑尾腔内', '周围系膜肿胀', '周围肿胀形式', '回盲部肠管肿胀',\
-                                        '腹腔游离积液', '淋巴结胀大', '肠管扩张', '阑尾炎类别', '成像角度'])
+            df2 = pd.DataFrame(columns=['Check_ID', '直径', '管壁层次', '阑尾腔内', '周围系膜肿胀', '周围肿胀形式',
+                                        '回盲部肠管肿胀','腹腔游离积液', '淋巴结胀大', '肠管扩张', '阑尾炎类别', '成像角度'])
+            if not os.path.exists(self.save_root):
+                os.makedirs(self.save_root)
             df2.to_csv(self.csv_out_path, index=False, encoding='gbk')
 
     # 读取进度文件（history.txt）
-    def create_history(self):
+    def read_history(self):
         if os.path.exists(self.history_path):
             ff = open(self.history_path, 'r+')
             ff.seek(0)
-            history = ff.read()
-            if history:
-                self.im_idx = int(history)
+            history = ff.readlines()
+            if history[0]:
+                self.im_idx = int(history[0])
+                self.directory = history[1]
+                self.file_list = self.listing_img(self.directory)  # 存储所有文件的文件名
+                self.file_num = len(self.file_list)
+                self.main_process()
             else:
                 self.im_idx = 0
             ff.close()
@@ -80,7 +86,8 @@ class mywindow(QMainWindow, Ui_MainWindow):
         with open(self.history_path, 'w+') as ff:
             ff.seek(0)
             ff.truncate()
-            ff.write(str(self.im_idx))
+            ff.writelines(str(self.im_idx)+'\n')
+            ff.writelines(self.directory)
 
     # 主函数（处理文件self.img_path）
     def main_process(self):
@@ -90,7 +97,8 @@ class mywindow(QMainWindow, Ui_MainWindow):
             self.label.pix = QPixmap(self.img_path).scaled(self.label.size())
             self.label.msk = QPixmap(self.label.size())
             self.label.msk.fill(Qt.black)
-
+            self.statusbar.showMessage('左键、右键：勾画横、纵断灰阶图 滚轮、Q、E：切换图片 S：保存 R、F：切换病人 \
+            W：清除画布 A、D：分别保存横断、纵断彩色原图 M:切换窗口大小 ESC:退出')
             self.split_path = self.img_path.split('\\')
             self.img_name = self.split_path[-1]
             self.ck_id = self.split_path[-2]
@@ -124,7 +132,6 @@ class mywindow(QMainWindow, Ui_MainWindow):
                 except TypeError:
                     pass
             self.change_color()
-
         except IndexError:
             self.msg1()
 
@@ -159,23 +166,12 @@ class mywindow(QMainWindow, Ui_MainWindow):
     def save_csv(self):
         # with open(self.csv_out_path) as ff2:
         df1 = pd.read_csv(self.csv_out_path, encoding='gbk')
-        # insertRow = pd.DataFrame(self.csv_in)
-        # a = df1.loc[df1.Check_ID == str(self.ck_id)]
-        idx = df1[df1.Check_ID.apply(str) == self.ck_id].index # 转为str比较
-        # try:
-        #     df1.loc[idx] = self.csv_in
-        # except:
-        #     df1.loc[len(df1)] = self.csv_in
-
+        idx = df1[df1.Check_ID.apply(str) == self.ck_id].index  # 转为str比较
         if idx.empty:
             df1.loc[len(df1)] = self.csv_in
         else:
             df1.loc[idx] = self.csv_in
         df1.to_csv(self.csv_out_path, index=False, encoding='gbk')
-
-    def update_info2(self):
-        info = '提示：鼠标左、右键分别勾画横、纵断灰阶图，按S键保存，滚轮切换图片（不保存）。键盘A、D键分别保存横断、纵断彩色原图图片'
-
 
     def where_now(self):
         name_list = []
@@ -333,9 +329,9 @@ class mywindow(QMainWindow, Ui_MainWindow):
                 self.refresh()
             except IndexError:
                 pass
-        if event.key() == Qt.Key_R:  #
+        if event.key() == Qt.Key_R:  # 上一个病人
             self.up_folder()
-        if event.key() == Qt.Key_F:  #
+        if event.key() == Qt.Key_F:  # 下一个病人
             self.down_folder()
         if event.key() == Qt.Key_W:  # W键删除mask
             try:
@@ -391,10 +387,10 @@ class mywindow(QMainWindow, Ui_MainWindow):
             self.window_flag = ans
             self.label.pix = QPixmap(self.img_path).scaled(self.label.size())
 
-
-
             # 列出所有jpg文件
-    def listing_img(self, in_path):
+
+    @staticmethod
+    def listing_img(in_path):
         name_list = []
         for root1, dirs1, files1 in os.walk(in_path):
             for file1 in files1:
@@ -425,6 +421,7 @@ class Winform(QWidget):
         self.msk.fill(Qt.black)
         self.polygon = QPolygon()
         self.path = QPainterPath()
+        self.resize(1024, 768)
 
     # 绘图函数
     def paintEvent(self, event):

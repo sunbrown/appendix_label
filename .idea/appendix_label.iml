@@ -4,5 +4,9 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="misc" />
+    <orderEntry type="module" module-name="thyroid_nodule" />
+    <orderEntry type="module" module-name="labelme-master" />
+    <orderEntry type="module" module-name="SoftUi" />
   </component>
 </module>
