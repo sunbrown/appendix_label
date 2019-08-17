@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="39761559-8541-48ab-b921-e2882041030f" name="Default Changelist" comment="不定期备份">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/appendix_label.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/appendix_label.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="39761559-8541-48ab-b921-e2882041030f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/history.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/label_result.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/固定窗口版本/myui_1080p.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/固定窗口版本/myui_1080p.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/固定窗口版本/点击运行_1080p.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/appendix2008-2018.csv" beforeDir="false" afterPath="$PROJECT_DIR$/appendix2008-2018.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myui.py" beforeDir="false" afterPath="$PROJECT_DIR$/myui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/myui.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/点击运行.py" beforeDir="false" afterPath="$PROJECT_DIR$/点击运行.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../labelme-master/.idea/labelme-master.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../labelme-master/.idea/labelme-master.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../labelme-master/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../labelme-master/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../misc/list_dir" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../misc/login.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../misc/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../misc/yuantu.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../misc/新建 Microsoft Word 文档.docx" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,20 +20,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/点击运行.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="417" column="22" selection-start-line="417" selection-start-column="22" selection-end-line="417" selection-end-column="22" />
+            <state relative-caret-position="475">
+              <caret line="121" column="25" lean-forward="true" selection-start-line="121" selection-start-column="25" selection-end-line="121" selection-end-column="25" />
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://D:/Anaconda3/Lib/site-packages/pandas/io/common.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="423" selection-start-line="423" selection-end-line="423" />
             </state>
           </provider>
         </entry>
@@ -65,6 +44,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/../misc/list_dir" />
+        <option value="D:/result/label_result.csv" />
         <option value="$PROJECT_DIR$/点击运行.py" />
       </list>
     </option>
@@ -97,7 +77,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SoftUi" />
+    <property name="last_opened_file_path" value="D:/result/label_result.csv" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -171,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566009333033</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="v1.1 修复csv无法创建的bug">
+      <created>1566036868467</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1566036868467</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -184,7 +171,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32939914" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.21137339" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39914164" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.31330472" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -200,21 +187,37 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init push" />
     <MESSAGE value="不定期备份" />
-    <option name="LAST_COMMIT_MESSAGE" value="不定期备份" />
+    <MESSAGE value="v1.1 修复csv无法创建的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.1 修复csv无法创建的bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/点击运行.py</url>
-          <line>168</line>
-          <option name="timeStamp" value="2" />
+          <line>171</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/点击运行.py</url>
+          <line>117</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>df.ID</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>df1</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>aaa = map(str, df1.Check_ID)</expression-string>
         <language-id>Python</language-id>
@@ -238,13 +241,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/Anaconda3/Lib/site-packages/pandas/io/common.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="423" selection-start-line="423" selection-end-line="423" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../misc/test.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -258,10 +254,20 @@
     <entry file="file://$PROJECT_DIR$/../misc/yuantu.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://D:/result/label_result.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://D:/Anaconda3/Lib/site-packages/pandas/io/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="423" selection-start-line="423" selection-end-line="423" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/点击运行.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="417" column="22" selection-start-line="417" selection-start-column="22" selection-end-line="417" selection-end-column="22" />
+        <state relative-caret-position="475">
+          <caret line="121" column="25" lean-forward="true" selection-start-line="121" selection-start-column="25" selection-end-line="121" selection-end-column="25" />
           <folding>
             <element signature="e#0#30#0" expanded="true" />
           </folding>

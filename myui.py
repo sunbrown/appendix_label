@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1366, 768)
+        MainWindow.resize(960, 540)
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("")
@@ -38,7 +38,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.widget2)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.start = QtWidgets.QPushButton(self.widget2)
-        self.start.setStyleSheet("height:50px;\n"
+        self.start.setStyleSheet("height:40px;\n"
 "font: 25pt \"楷体\";\n"
 "color: rgb(255, 255, 255);\n"
 "background-color:rgb(38, 131, 245);")
@@ -47,13 +47,13 @@ class Ui_MainWindow(object):
         self.textBrowser_3 = QtWidgets.QTextBrowser(self.widget2)
         self.textBrowser_3.setStyleSheet("background-color: rgb(230, 230, 230);\n"
 "border-radius:10px;\n"
-"font: 12pt \"楷体\";\n"
+"font: 15pt \"楷体\";\n"
 "color: rgb(41, 36, 33);")
         self.textBrowser_3.setObjectName("textBrowser_3")
         self.verticalLayout_4.addWidget(self.textBrowser_3)
         self.horizontalLayout_2.addWidget(self.widget2)
         self.horizontalLayout_2.setStretch(0, 10)
-        self.horizontalLayout_2.setStretch(1, 2)
+        self.horizontalLayout_2.setStretch(1, 3)
         self.horizontalLayout_23.addWidget(self.widget)
         self.QWidget2 = QtWidgets.QWidget(self.centralwidget)
         self.QWidget2.setStyleSheet("font: 15pt \"楷体\";")
@@ -93,7 +93,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.widget4 = QtWidgets.QWidget(self.QWidget2)
-        self.widget4.setStyleSheet("font: 15pt \"楷体\";\n"
+        self.widget4.setStyleSheet("font: 13pt \"楷体\";\n"
 "")
         self.widget4.setObjectName("widget4")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget4)
@@ -213,7 +213,7 @@ class Ui_MainWindow(object):
 "border-radius:10px;\n"
 "\n"
 "\n"
-"font: 15pt \"楷体\";\n"
+"font: 13pt \"楷体\";\n"
 "color: rgb(41, 36, 33);")
         self.widget3.setObjectName("widget3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget3)
@@ -291,7 +291,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_15.setStretch(1, 15)
         self.verticalLayout_15.setStretch(2, 1)
         self.horizontalLayout_23.addWidget(self.QWidget2)
-        self.horizontalLayout_23.setStretch(0, 5)
+        self.horizontalLayout_23.setStretch(0, 10)
+        self.horizontalLayout_23.setStretch(1, 1)
         self.verticalLayout.addLayout(self.horizontalLayout_23)
         self.verticalLayout.setStretch(0, 40)
         self.gridLayout_2.addLayout(self.verticalLayout, 0, 0, 1, 1)
@@ -310,8 +311,8 @@ class Ui_MainWindow(object):
         self.textBrowser_3.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'楷体\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">左键</span><span style=\" font-size:10pt; color:#ff0000;\">、</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">右键：</span><span style=\" font-size:10pt; color:#000000;\">勾画横、纵断灰阶图 </span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">滚轮、Q、E：</span><span style=\" font-size:10pt; color:#000000;\">切换图片 </span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">S：</span><span style=\" font-size:10pt; color:#000000;\">保存 </span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">R、F：</span><span style=\" font-size:10pt; color:#000000;\">切换病人 </span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">W</span><span style=\" font-size:10pt; color:#ff0000;\">：</span><span style=\" font-size:10pt; color:#000000;\">清除画布 </span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">A</span><span style=\" font-size:10pt; color:#ff0000;\">、</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">D：</span><span style=\" font-size:10pt; color:#000000;\">分别保存横断、纵断彩色原图</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\"> M:</span><span style=\" font-size:10pt; color:#000000;\">切换窗口大小</span><span style=\" font-size:10pt;\"> </span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">ESC:</span><span style=\" font-size:10pt;\">退出</span></p></body></html>"))
+"</style></head><body style=\" font-family:\'楷体\'; font-size:15pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">左键</span><span style=\" font-size:16pt; color:#ff0000;\">、</span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">右键：</span><span style=\" font-size:16pt; color:#000000;\">勾画横、纵断灰阶图 </span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">滚轮、Q、E：</span><span style=\" font-size:16pt; color:#000000;\">切换图片 </span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">S：</span><span style=\" font-size:16pt; color:#000000;\">保存 </span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">R、F：</span><span style=\" font-size:16pt; color:#000000;\">切换病人 </span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">W</span><span style=\" font-size:16pt; color:#ff0000;\">：</span><span style=\" font-size:16pt; color:#000000;\">清除画布 </span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">A</span><span style=\" font-size:16pt; color:#ff0000;\">、</span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">D：</span><span style=\" font-size:16pt; color:#000000;\">分别保存横断、纵断彩色原图</span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\"> M:</span><span style=\" font-size:16pt; color:#000000;\">切换窗口大小</span><span style=\" font-size:16pt;\"> </span><span style=\" font-size:16pt; font-weight:600; color:#ff0000;\">ESC:</span><span style=\" font-size:16pt;\">退出</span></p></body></html>"))
         self.label1.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">纵灰</p></body></html>"))
         self.label0.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">横灰</p></body></html>"))
         self.label2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\">横彩</p></body></html>"))

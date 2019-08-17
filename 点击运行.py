@@ -14,6 +14,7 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.label = Winform(self.widget)
         self.gridLayout_3.addWidget(self.label)
+        # self.label.setAutoFillBackground(True)
         self.directory = []  # 文件根目录
         self.file_list = []  # 存储所有文件的文件名
         self.img_path = ''  # 当前文件路径
@@ -22,7 +23,7 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.flag4 = []
         self.info_1 = ''
         self.info_2 = ''
-        self.window_flag = 3
+        self.window_flag = 2
 
         self.done = 0
         self.split_path = []
@@ -37,6 +38,7 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.save_dir = ''
         self.csv_out_path = 'D:/result/label_result.csv'
         self.count = 0
+        self.res = 0
         self.all_count = 0
         self.create_csv()
         self.read_history()
@@ -56,8 +58,8 @@ class mywindow(QMainWindow, Ui_MainWindow):
 
     def create_csv(self):
         if not os.path.exists(self.csv_out_path):
-            df2 = pd.DataFrame(columns=['Check_ID', '直径', '管壁层次', '阑尾腔内', '周围系膜肿胀', '周围肿胀形式',
-                                        '回盲部肠管肿胀','腹腔游离积液', '淋巴结胀大', '肠管扩张', '阑尾炎类别', '成像角度'])
+            df2 = pd.DataFrame(columns=['Check_ID', '直径', '管壁层次', '阑尾腔内', '周围系膜肿胀', '周围肿胀形式', '回盲部肠管肿胀',\
+                                        '腹腔游离积液', '淋巴结胀大', '肠管扩张', '阑尾炎类别', 'HV'])
             if not os.path.exists(self.save_root):
                 os.makedirs(self.save_root)
             df2.to_csv(self.csv_out_path, index=False, encoding='gbk')
@@ -97,8 +99,8 @@ class mywindow(QMainWindow, Ui_MainWindow):
             self.label.pix = QPixmap(self.img_path).scaled(self.label.size())
             self.label.msk = QPixmap(self.label.size())
             self.label.msk.fill(Qt.black)
-            self.statusbar.showMessage('左键、右键：勾画横、纵断灰阶图 滚轮、Q、E：切换图片 S：保存 R、F：切换病人 \
-            W：清除画布 A、D：分别保存横断、纵断彩色原图 M:切换窗口大小 ESC:退出')
+            # self.statusbar.showMessage('现在开始勾图！{}'.format(self.im_idx))
+
             self.split_path = self.img_path.split('\\')
             self.img_name = self.split_path[-1]
             self.ck_id = self.split_path[-2]
@@ -107,11 +109,12 @@ class mywindow(QMainWindow, Ui_MainWindow):
             self.dir = '\\'.join(self.split_path[1:-1])
             self.save_dir = os.path.join(self.save_root, self.dir)
             (self.count, self.all_count, self.flag4) = self.where_now()
+            self.res = self.all_count - self.count
             self.info_1 = '检查号:{0}\n总进度{4}/{3}\n病人进度{1}/{2}'.\
                 format(self.ck_id, self.count, self.all_count, self.file_num, self.im_idx+1)
             self.info_2 = '按R重画，按空格下一张或者跳过，按Q上一张(需要重新运行程序)，按ESC退出'
             self.label4.setText(self.info_1)
-            df = pd.read_csv('appendix2008-2018.csv', encoding='gbk')
+            df = pd.read_csv('appendix2008-2018.csv', encoding='gbk', converters={'ID': str})
             a1 = df.DN[df.ID == str(self.ck_id)]
             a2 = df.RS[df.ID == str(self.ck_id)]
             a3 = df.DES[df.ID == str(self.ck_id)]
@@ -132,6 +135,7 @@ class mywindow(QMainWindow, Ui_MainWindow):
                 except TypeError:
                     pass
             self.change_color()
+
         except IndexError:
             self.msg1()
 
@@ -166,7 +170,10 @@ class mywindow(QMainWindow, Ui_MainWindow):
     def save_csv(self):
         # with open(self.csv_out_path) as ff2:
         df1 = pd.read_csv(self.csv_out_path, encoding='gbk')
-        idx = df1[df1.Check_ID.apply(str) == self.ck_id].index  # 转为str比较
+        # insertRow = pd.DataFrame(self.csv_in)
+        # a = df1.loc[df1.Check_ID == str(self.ck_id)]
+        # 转为str比较
+        idx = df1[(df1.Check_ID.apply(str) == self.ck_id) & (df1.HV.apply(str) == self.csv_in[11])].index
         if idx.empty:
             df1.loc[len(df1)] = self.csv_in
         else:
@@ -270,25 +277,22 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.csv_in[10] = self.label_10.text()
 
     def wheelEvent(self, event):
-        # a = event.angleDelta()
-        num = int(event.angleDelta().y()/120)
-        for i in range(abs(num)):
-            if num > 0:
-                try:
-                    self.im_idx -= 1
-                    if self.im_idx < 0:
-                        self.im_idx = 0
-                    self.refresh()
-                except IndexError:
-                    pass
-            else:
-                try:
-                    self.im_idx += 1
-                    if self.im_idx > self.file_num - 1:
-                        self.im_idx = self.file_num - 1
-                    self.refresh()
-                except IndexError:
-                    pass
+        if (event.angleDelta().y() > 0) and (self.count > 1):
+            try:
+                self.im_idx -= 1
+                if self.im_idx < 0:
+                    self.im_idx = 0
+                self.refresh()
+            except IndexError:
+                pass
+        elif (event.angleDelta().y() < 0) and (self.res > 0):
+            try:
+                self.im_idx += 1
+                if self.im_idx > self.file_num - 1:
+                    self.im_idx = self.file_num - 1
+                self.refresh()
+            except IndexError:
+                pass
 
     def down_folder(self):
         try:
@@ -329,9 +333,9 @@ class mywindow(QMainWindow, Ui_MainWindow):
                 self.refresh()
             except IndexError:
                 pass
-        if event.key() == Qt.Key_R:  # 上一个病人
+        if event.key() == Qt.Key_R:  #
             self.up_folder()
-        if event.key() == Qt.Key_F:  # 下一个病人
+        if event.key() == Qt.Key_F:  #
             self.down_folder()
         if event.key() == Qt.Key_W:  # W键删除mask
             try:
@@ -343,11 +347,11 @@ class mywindow(QMainWindow, Ui_MainWindow):
                 if not os.path.exists(self.save_dir):
                     os.makedirs(self.save_dir)
                 self.label.msk.scaled(self.save_size).save(self.save_dir + '\\' + self.label.mouse_flag + '.png')
+                self.save_csv()
                 self.im_idx += 1
                 if self.im_idx > self.file_num - 1:
                     self.im_idx = self.file_num - 1
                 self.refresh()
-                self.save_csv()
             except FileNotFoundError or IndexError:
                 pass
         if event.key() == Qt.Key_A:  # Q键保存彩色图C_H.jpg
@@ -376,21 +380,19 @@ class mywindow(QMainWindow, Ui_MainWindow):
                 pass
         # 窗口缩放
         if event.key() == Qt.Key_M:
-            dic4 = {1: 2, 2: 3, 3: 1}
+            dic4 = {1: 2, 2: 1}
             ans = dic4.get(self.window_flag)
             if ans == 1:
                 self.showNormal()
             if ans == 2:
-                self.showMaximized()
-            if ans == 3:
                 self.showFullScreen()
             self.window_flag = ans
             self.label.pix = QPixmap(self.img_path).scaled(self.label.size())
 
-            # 列出所有jpg文件
 
-    @staticmethod
-    def listing_img(in_path):
+
+            # 列出所有jpg文件
+    def listing_img(self, in_path):
         name_list = []
         for root1, dirs1, files1 in os.walk(in_path):
             for file1 in files1:
