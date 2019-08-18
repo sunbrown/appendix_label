@@ -34,14 +34,19 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.history = int
         self.history_path = './history.txt'
         self.history_dir = ''
-        self.save_root = 'D:/result'
         self.save_dir = ''
-        self.csv_out_path = 'D:/result/label_result.csv'
+        if os.path.exists('D:'):
+            self.save_root = 'D:/result'
+            self.csv_out_path = 'D:/result/label_result.csv'
+        else:
+            self.save_root = './result'
+            self.csv_out_path = './result/label_result.csv'
         self.count = 0
         self.res = 0
         self.all_count = 0
         self.create_csv()
         self.read_history()
+        self.name_list = []
         # self.save_size = self.label.size()
         self.csv_in = ['', 6, '双层', '液体', '有', '无', '无', '无', '无', '有', 1, 'H']
 
@@ -55,6 +60,10 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.pushButton_8.clicked.connect(self.btn8)
         self.pushButton_9.clicked.connect(self.btn9)
         self.pushButton_10.clicked.connect(self.btn10)
+        self.label0.clicked.connect(self.btn_change)
+        self.label1.clicked.connect(self.btn_change)
+        self.label2.clicked.connect(self.btn_change)
+        self.label3.clicked.connect(self.btn_change)
 
     def create_csv(self):
         if not os.path.exists(self.csv_out_path):
@@ -108,7 +117,7 @@ class mywindow(QMainWindow, Ui_MainWindow):
             self.root = self.split_path[0]
             self.dir = '\\'.join(self.split_path[1:-1])
             self.save_dir = os.path.join(self.save_root, self.dir)
-            (self.count, self.all_count, self.flag4) = self.where_now()
+            (self.count, self.all_count, self.flag4, self.name_list) = self.where_now()
             self.res = self.all_count - self.count
             self.info_1 = '检查号:{0}\n总进度{4}/{3}\n病人进度{1}/{2}'.\
                 format(self.ck_id, self.count, self.all_count, self.file_num, self.im_idx+1)
@@ -118,6 +127,15 @@ class mywindow(QMainWindow, Ui_MainWindow):
             a1 = df.DN[df.ID == str(self.ck_id)]
             a2 = df.RS[df.ID == str(self.ck_id)]
             a3 = df.DES[df.ID == str(self.ck_id)]
+
+            # idx1 = []
+            # ll = ('肠系膜上动脉', '肠系膜上静脉', '胆道系统', '腹部静脉', '腹部血管', '腹腔干动脉', '肝动脉', '肝静脉', '肝脏', '会阴部',
+            #       '肛管', '肛周', '甲状腺', '颈部', '颈部血管', '门静脉系统', '脾静脉', '脾脏', '乳腺', '上肢', '十二指肠', '下肢动脉',
+            #       '下肢静脉', '心包腔', '胸腔', '腋窝', '胰腺', '阴囊')
+            # for lll in ll:
+            #     idx1 = df[df.PT == lll + '：'].index
+            #     df.DES = df.DES.loc[idx1] = None
+
             self.textBrowser_3.clear()
             for i1 in a1:
                 try:
@@ -138,6 +156,25 @@ class mywindow(QMainWindow, Ui_MainWindow):
 
         except IndexError:
             self.msg1()
+
+    def btn_change(self):
+        name = mywindow.sender(self).objectName()
+        if name == 'label0':
+            self.label0.setStyleSheet("background-color:rgb(255,97,0);")
+            if os.path.exists(self.save_dir + '\\H.png'):
+                os.remove(self.save_dir + '\\H.png')
+        if name == 'label1':
+            self.label1.setStyleSheet("background-color:rgb(255,97,0);")
+            if os.path.exists(self.save_dir + '\\V.png'):
+                os.remove(self.save_dir + '\\V.png')
+        if name == 'label2':
+            self.label2.setStyleSheet("background-color:rgb(255,97,0);")
+            if os.path.exists(self.save_dir + '\\C_H.jpg'):
+                os.remove(self.save_dir + '\\C_H.jpg')
+        if name == 'label3':
+            self.label3.setStyleSheet("background-color:rgb(255,97,0);")
+            if os.path.exists(self.save_dir + '\\C_V.jpg'):
+                os.remove(self.save_dir + '\\C_V.jpg')
 
     def change_color(self):
         if self.flag4[0]:
@@ -197,7 +234,7 @@ class mywindow(QMainWindow, Ui_MainWindow):
         flag[1] = 'V.png' in name_list
         flag[2] = 'C_H.jpg' in name_list
         flag[3] = 'C_V.jpg' in name_list
-        return a, b, flag
+        return a, b, flag, name_list
 
     def open_all(self):
         directory = QFileDialog.getExistingDirectory(self, "选择文件夹", "/")
@@ -475,7 +512,10 @@ class Winform(QWidget):
     def mouseReleaseEvent(self, event):
         # 鼠标左键释放
         if event.button() == Qt.LeftButton or Qt.RightButton:
-            self.points_list.append(self.points_list[0])
+            try:
+                self.points_list.append(self.points_list[0])
+            except:
+                pass
             self.msk_flag = True
             self.update()
 
