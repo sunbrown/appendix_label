@@ -1,20 +1,20 @@
 from myui import Ui_MainWindow
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QMessageBox, QVBoxLayout, QBoxLayout
-from PyQt5.QtGui import QPainter, QPixmap, QPen, QPolygon, QPainterPath, QPolygonF, QWheelEvent,QPalette, QBrush
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QMessageBox
+from PyQt5.QtGui import QPainter, QPixmap, QPen, QPolygon, QPainterPath, QPolygonF
+from PyQt5.QtCore import Qt
 import os
 import shutil
 import sys
 import pandas as pd
-import csv
+import pickle
 
-class mywindow(QMainWindow, Ui_MainWindow):
+
+class MyWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
-        super(mywindow, self).__init__()
+        super(MyWindow, self).__init__()
         self.setupUi(self)
         self.label = Winform(self.widget)
         self.gridLayout_3.addWidget(self.label)
-        # self.label.setAutoFillBackground(True)
         self.directory = []  # 文件根目录
         self.file_list = []  # 存储所有文件的文件名
         self.img_path = ''  # 当前文件路径
@@ -24,7 +24,7 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.info_1 = ''
         self.info_2 = ''
         self.window_flag = 2
-
+        self.csv_in = ['', 6, '双层', '液体', '有', '无', '无', '无', '无', '有', 1, 'H', '']
         self.done = 0
         self.split_path = []
         self.img_name = ''
@@ -44,11 +44,9 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.count = 0
         self.res = 0
         self.all_count = 0
-        self.create_csv()
-        self.read_history()
         self.name_list = []
-        # self.save_size = self.label.size()
-        self.csv_in = ['', 6, '双层', '液体', '有', '无', '无', '无', '无', '有', 1, 'H']
+        self.create_csv()      # 初始化结果csv
+        self.read_history()     # 读取历史记录
 
         self.start.clicked.connect(self.open_all)  # 打开图像文件路径
         self.pushButton_2.clicked.connect(self.btn2)
@@ -67,8 +65,8 @@ class mywindow(QMainWindow, Ui_MainWindow):
 
     def create_csv(self):
         if not os.path.exists(self.csv_out_path):
-            df2 = pd.DataFrame(columns=['Check_ID', '直径', '管壁层次', '阑尾腔内', '周围系膜肿胀', '周围肿胀形式', '回盲部肠管肿胀',\
-                                        '腹腔游离积液', '淋巴结胀大', '肠管扩张', '阑尾炎类别', 'HV'])
+            df2 = pd.DataFrame(columns=['Check_ID', '直径', '管壁层次', '阑尾腔内', '周围系膜肿胀', '周围肿胀形式', '回盲部肠管肿胀',
+                                        '腹腔游离积液', '淋巴结胀大', '肠管扩张', '阑尾炎类别', 'HV', '文件名'])
             if not os.path.exists(self.save_root):
                 os.makedirs(self.save_root)
             df2.to_csv(self.csv_out_path, index=False, encoding='gbk')
@@ -83,8 +81,10 @@ class mywindow(QMainWindow, Ui_MainWindow):
                 self.im_idx = int(history[0])
                 self.directory = history[1]
                 self.file_list = self.listing_img(self.directory)  # 存储所有文件的文件名
+                with open('./文件名列表.pk', 'wb+') as f:
+                    pickle.dump(self.file_list, f)
                 self.file_num = len(self.file_list)
-                self.main_process()
+                self.refresh()
             else:
                 self.im_idx = 0
             ff.close()
@@ -128,14 +128,6 @@ class mywindow(QMainWindow, Ui_MainWindow):
             a2 = df.RS[df.ID == str(self.ck_id)]
             a3 = df.DES[df.ID == str(self.ck_id)]
 
-            # idx1 = []
-            # ll = ('肠系膜上动脉', '肠系膜上静脉', '胆道系统', '腹部静脉', '腹部血管', '腹腔干动脉', '肝动脉', '肝静脉', '肝脏', '会阴部',
-            #       '肛管', '肛周', '甲状腺', '颈部', '颈部血管', '门静脉系统', '脾静脉', '脾脏', '乳腺', '上肢', '十二指肠', '下肢动脉',
-            #       '下肢静脉', '心包腔', '胸腔', '腋窝', '胰腺', '阴囊')
-            # for lll in ll:
-            #     idx1 = df[df.PT == lll + '：'].index
-            #     df.DES = df.DES.loc[idx1] = None
-
             self.textBrowser_3.clear()
             for i1 in a1:
                 try:
@@ -158,7 +150,7 @@ class mywindow(QMainWindow, Ui_MainWindow):
             self.msg1()
 
     def btn_change(self):
-        name = mywindow.sender(self).objectName()
+        name = MyWindow.sender(self).objectName()
         if name == 'label0':
             self.label0.setStyleSheet("background-color:rgb(255,97,0);")
             if os.path.exists(self.save_dir + '\\H.png'):
@@ -203,12 +195,10 @@ class mywindow(QMainWindow, Ui_MainWindow):
         self.csv_in[0] = self.ck_id
         self.csv_in[1] = self.spinBox.text()
         self.csv_in[11] = self.label.mouse_flag
+        self.csv_in[12] = self.img_name
 
     def save_csv(self):
-        # with open(self.csv_out_path) as ff2:
         df1 = pd.read_csv(self.csv_out_path, encoding='gbk')
-        # insertRow = pd.DataFrame(self.csv_in)
-        # a = df1.loc[df1.Check_ID == str(self.ck_id)]
         # 转为str比较
         idx = df1[(df1.Check_ID.apply(str) == self.ck_id) & (df1.HV.apply(str) == self.csv_in[11])].index
         if idx.empty:
@@ -258,55 +248,46 @@ class mywindow(QMainWindow, Ui_MainWindow):
             pass
 
     def btn2(self):
-        # self.pushButton_2.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic2 = {'双层': '紊乱', '紊乱': '正常', '正常': '双层'}
         self.label_2.setText(dic2.get(self.label_2.text()))
         self.csv_in[2] = self.label_2.text()
 
     def btn3(self):
-        # self.pushButton_3.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic3 = {'液体': '气体', '气体': '粪石', '粪石': '液体'}
         self.label_3.setText(dic3.get(self.label_3.text()))
         self.csv_in[3] = self.label_3.text()
 
     def btn4(self):
-        # self.pushButton_4.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic4 = {'有': '无', '无': '有'}
         self.label_4.setText(dic4.get(self.label_4.text()))
         self.csv_in[4] = self.label_4.text()
 
     def btn5(self):
-        # self.pushButton_5.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic5 = {'有': '无', '无': '有'}
         self.label_5.setText(dic5.get(self.label_5.text()))
         self.csv_in[5] = self.label_5.text()
 
     def btn6(self):
-        # self.pushButton_6.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic6 = {'有': '无', '无': '有'}
         self.label_6.setText(dic6.get(self.label_6.text()))
         self.csv_in[6] = self.label_6.text()
 
     def btn7(self):
-        # self.pushButton_7.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic7 = {'有': '无', '无': '有'}
         self.label_7.setText(dic7.get(self.label_7.text()))
         self.csv_in[7] = self.label_7.text()
 
     def btn8(self):
-        # self.pushButton_8.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic8 = {'有': '无', '无': '有'}
         self.label_8.setText(dic8.get(self.label_8.text()))
         self.csv_in[8] = self.label_8.text()
 
     def btn9(self):
-        # self.pushButton_9.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic9 = {'有': '无', '无': '有'}
         self.label_9.setText(dic9.get(self.label_9.text()))
         self.csv_in[9] = self.label_9.text()
 
     def btn10(self):
-        # self.pushButton_10.setStyleSheet("background-color: rgb(255, 255, 255);")
         dic10 = {'1': '2', '2': '3', '3': '4', '4': '5', '5': '1'}
         dic11 = {'1': '单纯性阑尾炎', '2': '化脓性阑尾炎', '3': '化脓性伴灶性坏疽', '4': '坏疽性阑尾炎', '5': '阑尾脓肿'}
         self.label_10.setText(dic10.get(self.label_10.text()))
@@ -426,8 +407,6 @@ class mywindow(QMainWindow, Ui_MainWindow):
             self.window_flag = ans
             self.label.pix = QPixmap(self.img_path).scaled(self.label.size())
 
-
-
             # 列出所有jpg文件
     def listing_img(self, in_path):
         name_list = []
@@ -523,7 +502,7 @@ class Winform(QWidget):
 if __name__ == "__main__":
     save_root = r'D:\\result'
     app = QApplication(sys.argv)
-    window = mywindow()
+    window = MyWindow()
     window.showFullScreen()
     window.show()
     sys.exit(app.exec_())
