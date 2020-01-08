@@ -474,15 +474,17 @@ class Winform(QWidget):
             self.mouse_flag = 'H'
             self.msk_flag = False
             self.points_list.append(event.pos())
+            self.update()
         if event.button() == Qt.RightButton:
             self.mouse_flag = 'V'
             self.msk_flag = False
             self.points_list.append(event.pos())
+            self.update()
 
     # 鼠标移动事件
     def mouseMoveEvent(self, event):
         # 鼠标左键按下的同时移动鼠标
-        if event.buttons() and (Qt.LeftButton or Qt.RightButton):
+        if event.buttons() and (Qt.LeftButton or Qt.RightButton) and self.mouse_flag == 'H':
             self.points_list.append(event.pos())
             self.msk_flag = False
             self.update()
@@ -490,7 +492,17 @@ class Winform(QWidget):
     # 鼠标释放事件
     def mouseReleaseEvent(self, event):
         # 鼠标左键释放
-        if event.button() == Qt.LeftButton or Qt.RightButton:
+        if event.button() == Qt.LeftButton or Qt.RightButton and self.mouse_flag == 'H':
+            try:
+                self.points_list.append(self.points_list[0])
+            except:
+                pass
+            self.msk_flag = True
+            self.update()
+
+    def mouseDoubleClickEvent(self, event):
+        # 鼠标双击，取点完成
+        if event.button() == Qt.LeftButton or Qt.RightButton and self.mouse_flag == 'V':
             try:
                 self.points_list.append(self.points_list[0])
             except:
