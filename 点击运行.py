@@ -6,7 +6,6 @@ import os
 import shutil
 import sys
 import pandas as pd
-import pickle
 
 
 class MyWindow(QMainWindow, Ui_MainWindow):
@@ -81,8 +80,6 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 self.im_idx = int(history[0])
                 self.directory = history[1]
                 self.file_list = self.listing_img(self.directory)  # 存储所有文件的文件名
-                with open('./文件名列表.pk', 'wb+') as f:
-                    pickle.dump(self.file_list, f)
                 self.file_num = len(self.file_list)
                 self.refresh()
             else:
@@ -364,7 +361,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             try:
                 if not os.path.exists(self.save_dir):
                     os.makedirs(self.save_dir)
-                self.label.msk.scaled(self.save_size).save(self.save_dir + '\\' + self.label.mouse_flag + '.png')
+                # self.label.msk.scaled(self.save_size).save(self.save_dir + '\\' + self.label.mouse_flag + '.png')
+                self.label.msk.scaled(self.save_size).save(self.save_dir + '\\' + self.img_name[:-4] + '.png')
                 self.save_csv()
                 self.im_idx += 1
                 if self.im_idx > self.file_num - 1:
